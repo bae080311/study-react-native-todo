@@ -12,9 +12,7 @@ export default function App() {
   const onChangeText = (payload) => setText(payload);
   const addTodo = () => {
     if (text === "") return;
-    const newToDos = Object.assign({}, toDos, {
-      [Data.now()]: { text, work: working },
-    });
+    const newToDos = { ...toDos, [Date.now()]: { text, work: working } };
     setToDos(newToDos);
     setText("");
   };
