@@ -8,15 +8,17 @@ import {
   TextInput,
   ScrollView,
 } from "react-native";
-import { theme } from "./assets/color";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import { theme } from "./assets/color";
 const STORAGE_KEY = "@toDos";
 
 export default function App() {
   const [working, setWorking] = useState(true);
   const [text, setText] = useState("");
   const [toDos, setToDos] = useState({});
+  useEffect(() => {
+    loadToDos();
+  }, []);
   const travel = () => setWorking(false);
   const work = () => setWorking(true);
   const onChangeText = (payload) => setText(payload);
@@ -27,12 +29,7 @@ export default function App() {
     const s = await AsyncStorage.getItem(STORAGE_KEY);
     setToDos(JSON.parse(s));
   };
-  useEffect(
-    (() => {
-      loadToDos();
-    },
-    [])
-  );
+
   const addToDo = async () => {
     if (text === "") {
       return;
@@ -72,7 +69,9 @@ export default function App() {
         onChangeText={onChangeText}
         returnKeyType="done"
         value={text}
-        placeholder={working ? "Add a To Do" : "Where do you want to go?"}
+        placeholder={
+          working ? "What do you have to do?" : "Where do you want to go?"
+        }
         style={styles.input}
       />
       <ScrollView>
@@ -111,7 +110,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   toDo: {
-    backgroundColor: theme.grey,
+    backgroundColor: theme.toDoBg,
     marginBottom: 10,
     paddingVertical: 20,
     paddingHorizontal: 20,
@@ -120,6 +119,6 @@ const styles = StyleSheet.create({
   toDoText: {
     color: "white",
     fontSize: 16,
-    fontWeight: "500",
+    fontWeight: "600",
   },
 });
